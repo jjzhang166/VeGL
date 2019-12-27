@@ -1,29 +1,38 @@
 # VeGL
-Graphics Engine, uses:
-- GLFW and GLEW for context creation and OpenGL access.
-- Stb single-header libraries for various tasks.
-- GLM for maths
-- ImGUI for UI
 
-Everything else:
+Graphics Engine
+
+<h2> Dependencies: </h2>
+<ul type = "square">
+  <li> <b><important>GLFW</b></important> and <b><important>GLEW</b></important> for context creation and OpenGL access, respectively. </li>
+  <li> <b><important>STB</b></important> single-header libraries for various tasks. </li>
+  <li> <b><important>GLM</b></important> for maths </li>
+  <li> <b><important>ImGUI</b></important> for UI </li>
+</ul>
+
+<h2> Everything else: </h2>
 <p>Copyright &copy; 2019 Nicolas Ortiz. All rights reserved.</p>
 
-Current Progress, features:
-- Procedural ridged multi-fractal (absolute value of simplex-based fractal brownian motion) noise based terrain generation in Vertex shader.
-- Procedural primitive generation (w*h plane, 1 unit^3 cube)
-- Vertex specification abstractions (for element/vertex array buffers and vertex arrays)
-- Transformation framework with quaternion rotations
+<h2> Current Progress, features: </h2>
 
-Todo: 
-- More ImGUI
-- Refactoring... Refactoring and refactoring...
-- Realisting Lighting and then PBR 
-- On-the-fly shader generation for n-lights
-- More transformation stuff (parents kinda like in Unity3D)
-- Entity component system and then lua scripting (easy)
-- Multiple viewports/cameras (using glviewport and glscissor and rendering multiple times)
-- ....
-- Skeletal animations
-- Forward and inverse kinematics
-- Btw: Already have done a lot of these things on other platforms (from scratch!) just have to implement them again, here.
+<ul type = "square">
+  <li> Procedural ridged multi-fractal (absolute value of simplex-based fractal brownian motion) noise based terrain generation in Vertex shader. </li>
+  <li> Procedural primitive generation (w*h plane, 1 unit^3 cube) </li>
+  <li> Vertex specification abstractions (for element/vertex array buffers and vertex arrays) </li>
+  <li> Transformation framework with quaternion rotations </li>
+</ul>
 
+<h2> Todo: </h2> 
+
+<ol type = "a"> 
+  <li><i>  More <b><important>ImGUI</b></important> </i></li>
+  <li><i>  Refactoring... Refactoring and refactoring... </i></li>
+  <li><i>  Realisting Lighting and then <b>PBR</b> </i></li>
+  <li><i>  On-the-fly shader generation for n-lights </i></li>
+  <li><i>  More transformation stuff (parents kinda like in Unity3D) </i></li>
+  <li><i>  Entity component system and then <b><important>LUA</b></important> scripting (easy) </i></li>
+  <li><i>  Multiple viewports/cameras (using <code>glViewport</code> and <code>glScissor</code> and rendering multiple times) </i></li>
+  <li><i>  &hellip; </i></li>
+  <li><i>  Skeletal animations </i></li>
+  <li><i>  Forward and inverse kinematics </i></li>
+</ol> 
