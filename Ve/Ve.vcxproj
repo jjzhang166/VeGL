@@ -20,29 +20,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
-    <ClCompile Include="imgui.cpp" />
-    <ClCompile Include="imgui_demo.cpp" />
-    <ClCompile Include="imgui_draw.cpp" />
-    <ClCompile Include="imgui_impl_glfw.cpp" />
-    <ClCompile Include="imgui_impl_opengl3.cpp" />
-    <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="Vendor\imgui\imgui.cpp" />
+    <ClCompile Include="Vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Vendor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Vendor\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Vendor\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Debug.h" />
-    <ClInclude Include="imconfig.h" />
-    <ClInclude Include="imgui.h" />
-    <ClInclude Include="imgui_impl_glfw.h" />
-    <ClInclude Include="imgui_impl_opengl3.h" />
-    <ClInclude Include="imgui_internal.h" />
-    <ClInclude Include="imstb_rectpack.h" />
-    <ClInclude Include="imstb_textedit.h" />
-    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vendor\imgui\imconfig.h" />
+    <ClInclude Include="Vendor\imgui\imgui.h" />
+    <ClInclude Include="Vendor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Vendor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="Vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="Vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="VertexSpecification.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vendor\imgui\imgui.ini" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
