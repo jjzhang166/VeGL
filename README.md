@@ -1,4 +1,4 @@
-# Ve
+# VeGL
 Graphics Engine, uses:
 - GLFW and GLEW for context creation and OpenGL access.
 - Stb single-header libraries for various tasks.
