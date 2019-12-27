@@ -4,7 +4,7 @@
  &nbsp;
  
  <hr>
-  
+ 
 <html>
   <div>
     <nav>
@@ -16,6 +16,7 @@
     </nav> 
   </div>
   <hr>
+  <br> 
   <div id="Vendors">
     <section>
       <h3> Dependencies: </h2>
@@ -31,7 +32,9 @@
       <p>Copyright &copy; 2019 <i><b>Nicolas Ortiz</i></b>. All rights reserved.</p>
     </section>
   </div>
+  <br>
   <hr>
+  <br>
   <div id="Features">
     <section>
       <h3> Current features: </h2>
@@ -58,4 +61,12 @@
       </ol> 
     </section>
   </div>
+ 
+  <br>
+  <hr>
+  
+  <footer>
+       <p>Copyright &copy; 2019 <i><b>Nicolas Ortiz</i></b>. All rights reserved.</p>
+  </footer>
+  
 </html>
