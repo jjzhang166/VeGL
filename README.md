@@ -23,8 +23,8 @@
       <ul type = "square">
         <li> <b><important><a href="https://www.glfw.org/">GLFW</a></b></important> and <b><important><a href="http://glew.sourceforge.net/">GLEW</a></b></important> for context creation and OpenGL access, respectively.</li>
         <li> <b><important><a href="https://github.com/nothings/stb">STB</a></b></important> single-header libraries for various tasks. </li>
-        <li> <b><important><a href="https://glm.g-truc.net/0.9.9/index.html">GLM</a></b></important> for mathematics </li>
-        <li> <b><important><a href="https://github.com/ocornut/imgui">ImGUI</a></b></important> for UI </li>
+        <li> <b><important><a href="https://glm.g-truc.net/0.9.9/index.html">GLM</a></b></important> for mathematics. </li>
+        <li> <b><important><a href="https://github.com/ocornut/imgui">ImGUI</a></b></important> for UI. </li>
       </ul>
     </section>
   </div>
