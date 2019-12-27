@@ -27,11 +27,6 @@
         <li> <b><important><a href="https://github.com/ocornut/imgui">ImGUI</a></b></important> for UI </li>
       </ul>
     </section>
-    <br>
-    <section>
-      <h3> Everything else: </h2>
-      <p>Copyright &copy; 2019 <i><b>Nicolas Ortiz</i></b>. All rights reserved.</p>
-    </section>
   </div>
   <br>
   <hr>
