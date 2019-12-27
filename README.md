@@ -47,7 +47,7 @@
   - [x] <b>Transformation</b> framework with <b>quaternion</b>-based rotations
  &nbsp;  
   - [ ] <i>  More UI </i>
-  - [ ] <i>  Refactoring, Refactoring and &hellip; refactoring! </i>
+  - [ ] <i>  Refactoring, refactoring and &hellip; more refactoring! </i>
   - [ ] <i>  Realisting Lighting and then <b>PBR</b> </i>
   - [ ] <i>  On-the-fly shader generation for n-lights </i>
   - [ ] <i>  More transformation stuff (parents kind-of like in <b><important>Unity3D</b></important>) </i>
