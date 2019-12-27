@@ -13,6 +13,12 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 camPos;
 
+uniform int depthFog; //0 plane based, 1 range based
+uniform int fogSelector; //0 linear, 1 exp, 2 exp sq
+
+uniform vec3 fogColor;
+uniform float fogDensity;
+
 void main ()
 {
 	vec2 uv = fs_in.TexCoords;
@@ -27,5 +33,39 @@ void main ()
 
     vec3 objectColor = texture(ground_diff, uv).rgb;
     vec3 result = (ambient + diffuse) * objectColor;
-	color = vec4(result, 1.0);
+
+    float dist = 0;
+    float fogFactor = 0;
+    vec3 finalColor = vec3(0,0,0);
+
+    if(depthFog == 0)
+    {
+    	dist = abs(fs_in.FragPos.z);
+    }
+    else
+    {
+    	dist = length(fs_in.FragPos);
+    }
+
+    if(fogSelector == 0)
+    {
+    	//20 start, 80 fog ends
+    	fogFactor = (80- dist)/(80-20);
+    	fogFactor = clamp(fogFactor, 0.0, 1.0);
+    	finalColor = mix(fogColor, result, fogFactor);
+    }
+    else if(fogSelector == 1)
+    {
+    	fogFactor = 1.0 / exp(dist * (fogDensity/20));
+    	fogFactor = clamp(fogFactor, 0.0, 1.0);
+    	finalColor = mix(fogColor, result, fogFactor);
+    }
+    else if(fogSelector == 2)
+    {
+    	fogFactor = 1.0 / exp((dist * (fogDensity/20)) * (dist * (fogDensity/20)));
+    	fogFactor = clamp(fogFactor, 0.0, 1.0);
+    	finalColor = mix(fogColor, result, fogFactor);
+    }
+
+	color = vec4(finalColor, 1.0);
 };

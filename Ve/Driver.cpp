@@ -97,25 +97,28 @@ int main()
 		GL_VERTEX_SHADER, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Shaders/default.frag", GL_FRAGMENT_SHADER, NULL);
 	shader.CompileShader ();
 
-	shader.Bind ();
-	shader.LoadTexture (diffuse);
-	shader.LoadTexture (normal);
-
 	Camera camera (glm::vec3 (0)); 
 	camera.zFar = 100;
 	camera.Rotate (glm::vec3 (-22.0f, 0,0));
 
 	Transform terrain_transform (glm::vec3 (-250, -12, -500));
-
 	glm::vec3 lightPos (0, 0, 0); 
 	glm::vec3 lightColor (0.2f, 0.2f, 0);
 
 	ImGui::CreateContext ();
 	ImGuiIO& io = ImGui::GetIO (); (void)io;
 	ImGui::StyleColorsLight ();
-
 	ImGui_ImplGlfw_InitForOpenGL (window, true);
 	ImGui_ImplOpenGL3_Init ("#version 330 core");
+
+	shader.Bind ();
+	shader.LoadTexture (diffuse);
+	shader.LoadTexture (normal);
+
+	int fogDepth = 1;
+	int fogSelector = 1;
+	float fogDensity = 0.01f;
+	glm::vec3 fogColor (0.5f);
 
 	while (!glfwWindowShouldClose (window))
 	{
@@ -141,11 +144,29 @@ int main()
 		ImGui::NewFrame ();
 
 		ImGui::Begin ("Performance");  
-		ImGui::SetWindowSize (ImVec2 (100, 50));
+		ImGui::SetWindowSize (ImVec2 (300, 600));
 		ImGui::Text ("FPS: %.2f", fpsAvg);
+
+		ImGui::CollapsingHeader ("Fog");
+		ImGui::Text ("type");
+		ImGui::RadioButton ("Linear", &fogSelector, 0); ImGui::SameLine ();
+		ImGui::RadioButton ("Exp", &fogSelector, 1); ImGui::SameLine ();
+		ImGui::RadioButton ("Exp^2", &fogSelector, 2);
+		ImGui::Text ("Dist mode");
+		ImGui::RadioButton ("Plane", &fogDepth, 0); ImGui::SameLine ();
+		ImGui::RadioButton ("Range", &fogDepth, 1);
+
+		ImGui::SliderFloat ("Density", &fogDensity, 0.0f, 1.0f);
+
+		float cols[3] = { fogColor.x, fogColor.y, fogColor.z };
+		ImGui::SliderFloat3 ("Color", cols, 0.0f, 1.0f);
+		fogColor = glm::vec3 (cols[0], cols[1], cols[2]);
+
 		ImGui::End ();
 
-		camera.Rotate (glm::vec3 (0,0, 45.0f) * (float)deltaTime, false);
+
+
+		//camera.Rotate (glm::vec3 (0,0, 45.0f) * (float)deltaTime, false);
 
 		shader.Bind ();
 		mesh.Bind ();
@@ -154,6 +175,11 @@ int main()
 		shader.SetUniform ("projection", camera.GetProjection (width / height));
 		shader.SetUniform ("lightPos", lightPos);
 		shader.SetUniform ("lightColor", lightColor);
+
+		shader.SetUniform ("depthFog", fogDepth);
+		shader.SetUniform ("fogSelector", fogSelector);
+		shader.SetUniform ("fogDensity", fogDensity);
+		shader.SetUniform ("fogColor", fogColor);
 
 		glDrawElements (GL_TRIANGLES, mesh.GetIndexCount (), GL_UNSIGNED_INT, nullptr);
 

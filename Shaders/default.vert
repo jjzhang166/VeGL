@@ -79,7 +79,7 @@ float FBN(vec3 m, float freq=1, float amp=0.53, float lacunarity=2.0, float gain
 void main ()
 {
 	vec3 np = position;
-	np.y = abs(sFBN(vec3(position.x/33, 0, position.z/33)) * 12) + (0.4*sFBN(vec3(position.x/16, 0, position.z/16))) + (0.2*sFBN(vec3(position.x/8, 0, position.z/8)));
+	np.y = abs(FBN(vec3(position.x/33, 0, position.z/33)) * 12) + (0.4*FBN(vec3(position.x/16, 0, position.z/16))) + (0.2*FBN(vec3(position.x/8, 0, position.z/8)));
 
     vs_out.TexCoords = uv;
     vs_out.FragPos =  projection * view * model * vec4(np,1.0);
