@@ -1,4 +1,9 @@
 # VeGL
+<p><i> Graphics Engine</i></p>
+
+ &nbsp;
+ &nbsp;
+  
 <html>
   <div>
     <nav>
@@ -31,9 +36,9 @@
       <h3> Current features: </h2>
       <ul type = "square">
         <li> <b>Procedural ridged-multi-fractal</b> (absolute value of simplex-based fractal brownian motion) noise based terrain generation in Vertex shader. </li>
-        <li> <b>Procedural primitive generation</b> (<var>w</var>&times;z<var>h</var> plane, 1 unit<sup>3</sup> cube) </li>
+        <li> <b>Procedural primitive generation</b> (<var>w</var>&times;<var>h</var> plane, 1 unit<sup>3</sup> cube) </li>
         <li> <b>Vertex specification</b> abstractions (for element/vertex array buffers and vertex arrays) </li>
-        <li> Transformation framework with <b>quaternion</b> rotations </li>
+        <li> Transformation framework with <b>quaternion</b>-based rotations </li>
       </ul>
     </section>
     <section>
@@ -43,7 +48,7 @@
         <li><i>  Refactoring... Refactoring and refactoring... </i></li>
         <li><i>  Realisting Lighting and then <b>PBR</b> </i></li>
         <li><i>  On-the-fly shader generation for n-lights </i></li>
-        <li><i>  More transformation stuff (parents kinda like in Unity3D) </i></li>
+        <li><i>  More transformation stuff (parents kind-of like in <b><important>Unity3D</b></important>) </i></li>
         <li><i>  Entity component system and then <b><important>LUA</b></important> scripting (easy) </i></li>
         <li><i>  Multiple viewports/cameras (using <code>glViewport</code> and <code>glScissor</code> and rendering multiple times) </i></li>
         <li><i>  &hellip; </i></li>
