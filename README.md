@@ -12,6 +12,7 @@
       <ul type = "disc">
         <li><i><small><a href="#Vendors">Dependencies</a></small></i></li>
         <li><i><small><a href="#Features">Features</a></small></i></li>
+        <li><i><small><a href="#Screen-shots">Screenshots</a></small></i></li>
       </ul>
     </nav> 
   </div>
@@ -51,7 +52,16 @@
   - [ ] <i>  Skeletal animations </i>
   - [ ] <i>  Forward and inverse kinematics </i>
   
-  </section>
+    </section>
+  </div>
+  <br>
+  <hr>
+  <br>
+  
+  <div id="Screen-shots">
+   <section>
+      
+   </section>
   </div>
   
   <br>
