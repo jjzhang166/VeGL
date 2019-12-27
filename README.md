@@ -10,7 +10,7 @@
     <nav>
       <p><b><important>Table of contents</important></b></p>
       <ul type = "disc">
-        <li><i><small><a href="#Vendors">Vendors</a></small></i></li>
+        <li><i><small><a href="#Vendors">Dependencies</a></small></i></li>
         <li><i><small><a href="#Features">Features</a></small></i></li>
       </ul>
     </nav> 
