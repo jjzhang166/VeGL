@@ -58,7 +58,7 @@
     <br>
     <div id="Screen-shots">
         <section>
-            <h3> Screen Shots </h2>
+            <h3> Screenshots </h2>
             <img src="Branding/screenshots/cur 12-27-2019.png" alt="Screenshot 12/27/2019">
         </section>
     </div> 
