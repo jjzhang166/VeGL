@@ -37,7 +37,7 @@
             <h3> Features </h2>
  
   - [x] <b>Procedural ridged-multi-fractal</b> (absolute value of simplex-based fractal brownian motion) noise based terrain generation in <del>Vertex shader</del> <ins>dedicated Compute shader </ins>.  
-  - [x] <b>Procedural primitive generation</b> (<var>w</var>&times;<var>h</var> plane, 1 unit<sup>3</sup> cube)
+  - [x] <b>Procedural primitive generation</b> (<var>n<sup>2</sup> plane, 1 unit<sup>3</sup> cube)
   - [x] <b>Vertex specification</b> abstractions (for element/vertex array buffers and vertex arrays)
   - [x] <b>Transformation</b> framework with <b>quaternion</b>-based rotations
   - [x] <b>Compute-shader based procedural generation (increased uncapped framerate from 600fps to 3000+ fps, because we were recomputing the whole heightmap pixel by pixel every frame. Now, it's only done once.)</b> 
