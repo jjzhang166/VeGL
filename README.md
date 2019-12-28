@@ -71,6 +71,6 @@
     <br>
     <hr>
     <footer>
-        <p>VeGL and all related content except for dependencies Copyright &copy; 2019 <i><b>Nicolas Ortiz</i></b>. All rights reserved.</p>
+        <p>VeGL Copyright &copy; 2019 <i><b>Nicolas Ortiz</i></b>. All rights reserved.</p>
     </footer>
 </html>
