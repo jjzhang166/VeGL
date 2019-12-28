@@ -42,10 +42,10 @@
   - [x] <b>Transformation</b> framework with <b>quaternion</b>-based rotations
   - [x] <b>Compute-shader based procedural generation (increased uncapped framerate from 600fps to 3000+ fps, because we were recomputing the whole heightmap pixel by pixel every frame. Now, it's only done once.) 32-bit floating point heightmap precision. </b> 
  &nbsp;  
-  - [ ] <i>  More UI </i>
-  - [ ] <i>  Refactoring, refactoring and &hellip; more refactoring! </i>
-  - [ ] <i>  Realisting Lighting and then <b>PBR</b> </i>
-  - [ ] <i>  On-the-fly shader generation for n-lights </i>
+  - [x] <i>  Realisting Lighting and then <b>PBR</b> </i>
+  - [~] <i>  More UI </i>
+  - [~] <i>  Refactoring, refactoring and &hellip; more refactoring! </i>
+  - [ ] <i>  n-lights </i>
   - [ ] <i>  More transformation stuff (parents kind-of like in <b><important>Unity3D</b></important>) </i>
   - [ ] <i>  Entity component system and then <b><important>LUA</b></important> scripting (easy) </i>
   - [ ] <i>  Multiple viewports/cameras (using <code>glViewport</code> and <code>glScissor</code> and rendering multiple times) </i>
@@ -63,6 +63,7 @@
             <img src="Branding/screenshots/cur 12-27-2019.png" alt="Screenshot 12/27/2019">
             <img src="Branding/screenshots/now.png" alt="Screenshot 12/28/2019">
             <img src="Branding/screenshots/wire.png" alt="Screenshot 12/28/2019">
+            <img src="Branding/screenshots/now2.png" alt="Screenshot 12/29/2019">
 
        </section>
     </div> 
