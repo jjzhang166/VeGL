@@ -14,8 +14,8 @@
 class Mesh
 {
 public:
-    Mesh (GLfloat* vertices, int szVertices, GLuint* indices, int nIndices, const VertexBufferLayout& vbl)
-        : m_vb (vertices, szVertices, indices, nIndices)
+    Mesh (GLfloat* vertices, int szVertices, GLuint* indices, int nIndices, const VertexBufferLayout& vbl, GLenum draw_mode = GL_TRIANGLES)
+        : m_vb (vertices, szVertices, indices, nIndices), draw_mode(draw_mode)
     {
         m_va.AddBuffer (m_vb, vbl);
     }
@@ -150,7 +150,7 @@ public:
 
 			auto N = glm::triangleNormal (pos1, pos2, pos3);
 
-			glm::vec3 edge1 = pos2 - pos1;
+			/*glm::vec3 edge1 = pos2 - pos1;
 			glm::vec3 edge2 = pos3 - pos1; 
 			glm::vec2 deltaUV1 = glm::vec2(u2,v2) - glm::vec2 (u1,v1);
 			glm::vec2 deltaUV2 = glm::vec2 (u3,v3) - glm::vec2 (u1,v1);
@@ -173,6 +173,13 @@ public:
 				p1_x, p1_y, p1_z, N.x, N.y, N.z, u1, v1, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z,
 				p2_x, p2_y, p2_z, N.x, N.y, N.z, u2, v2, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z,
 				p3_x, p3_y, p3_z, N.x, N.y, N.z, u3, v3, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z
+			};*/
+
+			auto triangle =
+			{
+				p1_x, p1_y, p1_z, u1, v1, N.x, N.y, N.z,
+				p2_x, p2_y, p2_z, u2, v2, N.x, N.y, N.z,
+				p3_x, p3_y, p3_z, u3, v3, N.x, N.y, N.z
 			};
 
 			vertices.insert (vertices.end (), triangle.begin (), triangle.end());
@@ -183,12 +190,78 @@ public:
 
 		VertexBufferLayout vbl;
 		vbl.AddAttribute<float> (3);
+		vbl.AddAttribute<float> (2);
+		vbl.AddAttribute<float> (3);
+		//vbl.AddAttribute<float> (3);
+		//vbl.AddAttribute<float> (3);
+
+		return Mesh (&vertices[0], vertices.size() * sizeof (GLfloat), &indices[0], indices.size (), vbl);
+	}
+
+	static Mesh Primitive_Sphere ()
+	{
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec2> uv;
+		std::vector<glm::vec3> normals;
+		std::vector<GLuint> indices;
+
+		const unsigned int X_SEGMENTS = 64;
+		const unsigned int Y_SEGMENTS = 64;
+		const float PI = 3.14159265359;
+
+		for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
+		{
+			for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+			{
+				float xSegment = (float)x / (float)X_SEGMENTS;
+				float ySegment = (float)y / (float)Y_SEGMENTS;
+				float xPos = std::cos (xSegment * 2.0f * PI) * std::sin (ySegment * PI);
+				float yPos = std::cos (ySegment * PI);
+				float zPos = std::sin (xSegment * 2.0f * PI) * std::sin (ySegment * PI);
+
+				positions.push_back (glm::vec3 (xPos, yPos, zPos));
+				uv.push_back (glm::vec2 (xSegment, ySegment));
+				normals.push_back (glm::vec3 (xPos, yPos, zPos));
+			}
+		}
+
+		bool oddRow = false;
+		for (int y = 0; y < Y_SEGMENTS; ++y)
+		{
+			if (!oddRow) 
+				for (int x = 0; x <= X_SEGMENTS; ++x)
+				{
+					indices.push_back (y * (X_SEGMENTS + 1) + x);
+					indices.push_back ((y + 1) * (X_SEGMENTS + 1) + x);
+				}
+			else
+				for (int x = X_SEGMENTS; x >= 0; --x)
+				{
+					indices.push_back ((y + 1) * (X_SEGMENTS + 1) + x);
+					indices.push_back (y * (X_SEGMENTS + 1) + x);
+				}
+			oddRow = !oddRow;
+		}
+
+		std::vector<float> vertices;
+		for (int i = 0; i < positions.size (); ++i)
+		{
+			vertices.push_back (positions[i].x);
+			vertices.push_back (positions[i].y);
+			vertices.push_back (positions[i].z);
+			vertices.push_back (uv[i].x);
+			vertices.push_back (uv[i].y);
+			vertices.push_back (normals[i].x);
+			vertices.push_back (normals[i].y);
+			vertices.push_back (normals[i].z);
+		}
+
+		VertexBufferLayout vbl;
 		vbl.AddAttribute<float> (3);
 		vbl.AddAttribute<float> (2);
 		vbl.AddAttribute<float> (3);
-		vbl.AddAttribute<float> (3);
 
-		return Mesh (&vertices[0], vertices.size() * sizeof (GLfloat), &indices[0], indices.size (), vbl);
+		return Mesh (&vertices[0], vertices.size () * sizeof (GLfloat), &indices[0], indices.size (), vbl, GL_TRIANGLE_STRIP);
 	}
 
     void Bind ()
@@ -199,8 +272,10 @@ public:
 
     int GetIndexCount () const { return m_vb.GetIndexCount (); }
     int GetVertexSize () const { return m_vb.GetVertexSize (); }
+	GLenum GetDrawMode () const { return draw_mode; }
 
 private:
     VertexArray m_va;
     VertexBuffer m_vb;
+	GLenum draw_mode;
 };

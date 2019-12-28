@@ -160,6 +160,12 @@ public:
         glUniform1i (GetUniformLocation (value.GetName()), textureIdx++);
     }
 
+    void LoadTexture (Texture2D* value)
+    {
+        value->Bind (textureIdx);
+        glUniform1i (GetUniformLocation (value->GetName ()), textureIdx++);
+    }
+
 private:
     GLuint m_programId;
     std::unordered_map<std::string, GLuint> m_uniformCache;

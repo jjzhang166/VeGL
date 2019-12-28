@@ -29,9 +29,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="HeightmapGen.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />

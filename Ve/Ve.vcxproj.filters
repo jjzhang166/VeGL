@@ -92,6 +92,12 @@
     <ClInclude Include="HeightmapGen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Vendor\imgui\imgui.ini">
