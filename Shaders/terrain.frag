@@ -1,20 +1,17 @@
 #version 330 core
-layout (location = 0) out vec4 o_color;
+layout (location = 0) out vec4 color;
 
-uniform sampler2D diffuseMap;
-uniform sampler2D normalMap;
+uniform sampler2D ground_diff;
+uniform sampler2D ground_norm;
 
 in VS_OUT {
-    vec3 FragPos;
     vec2 TexCoords;
-	vec3 TangentLightPos;
-    vec3 TangentViewPos;
-    vec3 TangentFragPos;
+	vec4 FragPos;
 } fs_in;
 
-
 uniform vec3 lightPos;
-uniform vec3 viewPos;
+uniform vec3 lightColor;
+uniform vec3 camPos;
 
 uniform int fogRanging; //0 plane based, 1 range based
 uniform int fogInterpolation; //0 linear (doesn't use density, uses fogEnd &fogStart), 1 exp, 2 exp sq
@@ -27,27 +24,18 @@ uniform float fogStart;
 
 void main ()
 {
-	vec3 normal = texture(normalMap, fs_in.TexCoords).rgb;
-    // transform normal vector to range [-1,1]
-    normal = normalize(normal * 2.0 - 1.0);  // this normal is in tangent space
-   
-    // get diffuse color
-    vec3 color = texture(diffuseMap, fs_in.TexCoords).rgb;
-    // ambient
-    vec3 ambient = 0.1 * color;
-    // diffuse
-    vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-    float diff = max(dot(lightDir, normal), 0.0);
-    vec3 diffuse = diff * color;
+	vec2 uv = fs_in.TexCoords;
 
-    // specular
-    vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    vec3 halfwayDir = normalize(lightDir + viewDir);  
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+	vec3 ambient = vec3(1);
+    vec3 normal = texture(ground_norm,  uv).rgb;
+    normal = normalize(normal * 2.0 - 1.0);   
 
-    vec3 specular = vec3(0.2) * spec;
-    vec3 result = ambient + diffuse + specular;
+    vec3 lightDir = normalize(lightPos - fs_in.FragPos.xyz);  
+    float diff = max(dot(normal, lightDir), 0.0);
+	vec3 diffuse = diff * lightColor;
+
+    vec3 objectColor = texture(ground_diff, uv).rgb;
+    vec3 result = (ambient + diffuse) * objectColor;
 
     float dist = 0;
     float fogFactor = 0;
@@ -82,5 +70,5 @@ void main ()
     	finalColor = mix(fogColor, result, fogFactor);
     }
 
-	o_color = vec4(finalColor, 1.0);
+	color = vec4(finalColor, 1.0);
 };

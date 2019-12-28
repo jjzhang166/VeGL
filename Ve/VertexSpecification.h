@@ -58,8 +58,8 @@ class VertexBuffer
 {
 public:
 	VertexBuffer (const GLfloat* p_vertices, GLsizei p_szVertices,
-		const GLuint* p_indices, GLsizei p_szIndices)
-		: m_szIndex (p_szIndices), m_szVertex (p_szVertices)
+		const GLuint* p_indices, GLsizei p_nIndices)
+		: m_nIndex (p_nIndices), m_szVertex (p_szVertices)
 	{
 		GLCall (glGenBuffers (1, &m_vboID));
 		GLCall (glBindBuffer (GL_ARRAY_BUFFER, m_vboID));
@@ -67,7 +67,7 @@ public:
 
 		GLCall (glGenBuffers (1, &m_iboID));
 		GLCall (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, m_iboID));
-		GLCall (glBufferData (GL_ELEMENT_ARRAY_BUFFER, p_szIndices, p_indices, GL_STATIC_DRAW));
+		GLCall (glBufferData (GL_ELEMENT_ARRAY_BUFFER, p_nIndices*sizeof(GLuint), p_indices, GL_STATIC_DRAW));
 	}
 
 	~VertexBuffer ()
@@ -88,13 +88,13 @@ public:
 		GLCall (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
-	GLsizei GetIndexCount () const { return m_szIndex; }
-	GLsizei GetVertexCount () const { return m_szVertex; }
+	GLsizei GetIndexCount () const { return m_nIndex; }
+	GLsizei GetVertexSize () const { return m_szVertex; }
 
 private:
 	GLuint m_iboID;
 	GLuint m_vboID;
-	GLsizei m_szIndex, m_szVertex;
+	GLsizei m_nIndex, m_szVertex;
 };
 
 
@@ -115,14 +115,13 @@ public:
 	{
 		Bind ();
 		buffer.Bind ();
-
 		const auto m_attributes = layout.GetAttributes ();
 		GLuint offset = 0;
 
 		for (GLuint i = 0; i < m_attributes.size (); i++)
 		{
 			const auto& attribute = m_attributes[i];
-			GLCall (glVertexAttribPointer (i, attribute.count, GL_FLOAT, GL_FALSE, layout.GetStride (), (void*)offset));
+			GLCall (glVertexAttribPointer (i, attribute.count, attribute.type, GL_FALSE, layout.GetStride (), (void*)offset));
 			GLCall (glEnableVertexAttribArray (i));
 			offset += attribute.count * attribute.size;
 		}

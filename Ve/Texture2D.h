@@ -10,6 +10,12 @@
 class Texture2D
 {
 public:
+	Texture2D (const std::string& p_name, GLuint id, int width, int height, int channels)
+		: m_name (p_name), m_textureId(id), m_width(width), m_height(height), m_nchannels(channels)
+	{
+
+	}
+
 	Texture2D (const std::string& p_name, const std::string& p_path)
 		: m_name(p_name)
 	{
@@ -33,7 +39,7 @@ public:
 				GLCall (glTexImage2D (GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, data));
 				break;
 			case 2:
-				GLCall (glTexImage2D (GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RG, GL_UNSIGNED_BYTE, data));
+				GLCall (glTexImage2D (GL_TEXTURE_2D, 0, GL_RG, m_width, m_height, 0, GL_RG, GL_UNSIGNED_BYTE, data));
 				break;
 			case 3:
 				GLCall (glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
