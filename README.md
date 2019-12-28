@@ -40,7 +40,7 @@
   - [x] <b>Procedural primitive generation</b> (<var>n<sup>2</sup> plane, 1 unit<sup>3</sup> cube)
   - [x] <b>Vertex specification</b> abstractions (for element/vertex array buffers and vertex arrays)
   - [x] <b>Transformation</b> framework with <b>quaternion</b>-based rotations
-  - [x] <b>Compute-shader based procedural generation (increased uncapped framerate from 600fps to 3000+ fps, because we were recomputing the whole heightmap pixel by pixel every frame. Now, it's only done once.)</b> 
+  - [x] <b>Compute-shader based procedural generation (increased uncapped framerate from 600fps to 3000+ fps, because we were recomputing the whole heightmap pixel by pixel every frame. Now, it's only done once.) 32-bit floating point heightmap precision. </b> 
  &nbsp;  
   - [ ] <i>  More UI </i>
   - [ ] <i>  Refactoring, refactoring and &hellip; more refactoring! </i>
