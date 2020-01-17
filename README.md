@@ -1,5 +1,5 @@
 <h1 align="middle"> VeGL </h1>
-<p align="middle"><i> Graphics Engine</i></p>
+<p align="middle"><i> Physically Based Renderer/Engine</i></p>
 
  &nbsp;
  
