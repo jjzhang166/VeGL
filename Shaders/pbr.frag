@@ -1,5 +1,3 @@
-#version 330 core
-
 out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
@@ -23,22 +21,19 @@ uniform struct Material
     vec3 aoCoeff;
 } material;
 
-uniform vec3 camPos;
-
-uniform vec3 lightPositions[4];
-uniform vec3 lightColors[4];
-
-
-/*struct Light
+uniform struct FogSettings
 {
-	vec3 position;
-	vec3 color;
-};
+	int fogRanging; //0 plane based, 1 range based
+	int fogInterpolation; //0 linear (doesn't use density, uses fogEnd &fogStart), 1 exp, 2 exp sq
 
-layout (std430, binding=0) buffer lighting_data
-{ 
- 	Light lights[];
-};*/
+	vec3 fogColor;
+	float fogDensity;
+
+	float fogEnd;
+	float fogStart;
+} fog_settings;
+
+uniform vec3 camPos;
 
 const float PI = 3.14159265359;
 
@@ -127,13 +122,18 @@ void main()
     F0 = mix(F0, albedo, metallic); //metallic workflow
 
     vec3 Lo = vec3(0.0);
-    for(int i = 0; i <4; ++i) 
+    for(int i = 0; i < max_lights; i++) 
     {
-        vec3 L = normalize(lightPositions[i] - WorldPos);
+		vec3 light_pos = lighting_data.lightPositions[i];
+		vec3 light_col = clamp(lighting_data.lightColors[i].rgb,0.,1.);
+		float light_int = lighting_data.lightIntensities[i];
+
+    	vec3 lMinusw = light_pos - WorldPos;
+        vec3 L = normalize(lMinusw);
         vec3 H = normalize(V + L);
-        float distance = length(lightPositions[i] - WorldPos);
+        float distance = length(lMinusw);
         float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = lightColors[i] * attenuation;
+        vec3 radiance = light_col * attenuation * light_int;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);   
@@ -160,5 +160,39 @@ void main()
     // HDR tonemapping and gamma correction
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2)); 
-    FragColor = vec4(color, 1.0);
+
+    // Fog
+    float dist = 0;
+    float fogFactor = 0;
+    vec3 finalColor = vec3(0,0,0);
+    vec3 result = color;
+
+    if(fog_settings.fogRanging == 0)
+    {
+    	dist = abs(WorldPos.z);
+    }
+    else
+    {
+    	dist = length(WorldPos);
+    }
+
+    if(fog_settings.fogInterpolation == 0)
+    {
+    	fogFactor = (fog_settings.fogEnd - dist)/(fog_settings.fogEnd-fog_settings.fogStart);
+    	fogFactor = clamp(fogFactor, 0.0, 1.0);
+    	finalColor = mix(fog_settings.fogColor, result, fogFactor);
+    }
+    else if(fog_settings.fogInterpolation == 1)
+    {
+    	fogFactor = 1.0 / exp(dist * (fog_settings.fogDensity/20.0));
+    	fogFactor = clamp(fogFactor, 0.0, 1.0);
+    	finalColor = mix(fog_settings.fogColor, result, fogFactor);
+    }
+    else if(fog_settings.fogInterpolation == 2)
+    {
+    	fogFactor = 1.0 / exp((dist * (fog_settings.fogDensity/20.0)) * (dist * (fog_settings.fogDensity/20.0)));
+    	fogFactor = clamp(fogFactor, 0.0, 1.0);
+    	finalColor = mix(fog_settings.fogColor, result, fogFactor);
+    }
+    FragColor = vec4(finalColor, 1.0);
 }

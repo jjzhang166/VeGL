@@ -13,6 +13,7 @@ class Core
 public:
 	void initGL ()
 	{
+		//GLFW setup
 		if (!glfwInit ())
 		{
 			const char* error;
@@ -40,6 +41,7 @@ public:
 
 		glfwMakeContextCurrent (window);
 
+		//OpenGL setup
 		GLenum glewStatus = glewInit ();
 		if (glewStatus != GLEW_OK)
 		{
@@ -55,12 +57,14 @@ public:
 		glShadeModel (GL_SMOOTH);
 		glClearColor (0.5, 0.5, 0.5, 1);
 		glClearDepth (1);
+		glEnable (GL_CULL_FACE);
+		glCullFace (GL_FRONT);
 
+		//ImGui setup
 		ImGui::CreateContext ();
 		ImGuiIO& io = ImGui::GetIO (); (void)io;
 		ImGui_ImplGlfw_InitForOpenGL (window, true);
 		ImGui_ImplOpenGL3_Init ("#version 330 core");
-
 		SetupImGuiStyleVe ();
 	}
 
@@ -84,14 +88,65 @@ public:
 
 	void Refresh ()
 	{
+		//Timing
+		double currentTime = glfwGetTime ();
+		deltaTime = (currentTime - previousTime);
+		previousTime = currentTime;
+		fpsMeasureBuffer.push_back (1.0f / deltaTime);
+
+		if (cur_samples++ >= samples)
+		{
+			cur_samples = 0;
+			fpsAvg = 0;
+			for (auto i = 0; i < fpsMeasureBuffer.size (); i++)
+				fpsAvg += fpsMeasureBuffer[i];
+			fpsAvg /= fpsMeasureBuffer.size ();
+			fpsMeasureBuffer.clear ();
+		}
+
+		if (currentTime - lastTimeDisplay_upd >= fps_display_interv)
+		{
+			fps_display = fpsAvg;
+			lastTimeDisplay_upd = currentTime;
+		}
+
+		//GL
 		glfwSwapBuffers (window);
 		glfwPollEvents ();
 		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
+	void ShowPerformanceUI (const std::string &title)
+	{
+		if (ImGui::CollapsingHeader (title.c_str()))
+		{
+			ImGui::Spacing ();
+			ImGui::Text ("Avg. fps: %.2f", fps_display);
+			ImGui::Text ("Avg. frametime (ms): %.2f", 1000.0f / fps_display);
+			ImGui::Spacing ();
+			ImGui::Text ("Last fps: %.2f", 1.0f / deltaTime);
+			ImGui::Text ("Last frametime (ms): %.2f", 1000.0 * deltaTime);
+			ImGui::Spacing ();
+		}
+	}
+
+	float GetDeltaTime () const { return deltaTime; }
+
 private:
 	GLFWwindow* window;
 	float width=1600, height=1200;
+
+	std::vector<double> fpsMeasureBuffer;
+	double deltaTime = 1;
+	double previousTime = 0;
+
+	double fpsAvg = 0;
+	int samples = 100;
+	int cur_samples = 0;
+
+	double fps_display = 0;
+	double lastTimeDisplay_upd = 0;
+	double fps_display_interv = 1;
 
 	struct ImVec3 { float x, y, z; ImVec3 (float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) { x = _x; y = _y; z = _z; } };
 

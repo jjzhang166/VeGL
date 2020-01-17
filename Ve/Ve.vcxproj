@@ -48,6 +48,8 @@
     <ClInclude Include="VertexSpecification.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Shaders\pbr.frag" />
+    <None Include="..\Shaders\pbr.vert" />
     <None Include="Vendor\imgui\imgui.ini" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

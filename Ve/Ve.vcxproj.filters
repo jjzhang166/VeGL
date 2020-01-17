@@ -103,5 +103,11 @@
     <None Include="Vendor\imgui\imgui.ini">
       <Filter>Header Files\Vendor\imgui</Filter>
     </None>
+    <None Include="..\Shaders\pbr.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\Shaders\pbr.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

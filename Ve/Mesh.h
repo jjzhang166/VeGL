@@ -25,6 +25,7 @@ public:
 		VertexBufferLayout vbl;
 		vbl.AddAttribute<GLfloat> (3);
 		vbl.AddAttribute<GLfloat> (2);
+		vbl.AddAttribute<GLfloat> (3);
 
 		std::vector<GLfloat> vertices;
 		std::vector<GLuint> indices;
@@ -40,24 +41,36 @@ public:
                 vertices.push_back (j);
                 vertices.push_back (0);
                 vertices.push_back (0);
+				vertices.push_back (0);
+				vertices.push_back (1);
+				vertices.push_back (0);
 
                 vertices.push_back (i);
                 vertices.push_back (0.0);
                 vertices.push_back (j + step);
                 vertices.push_back (0);
                 vertices.push_back (1);
+				vertices.push_back (0);
+				vertices.push_back (1);
+				vertices.push_back (0);
 
                 vertices.push_back (i + step);
                 vertices.push_back (0.0);
                 vertices.push_back (j);
                 vertices.push_back (1);
                 vertices.push_back (0);
+				vertices.push_back (0);
+				vertices.push_back (1);
+				vertices.push_back (0);
 
                 vertices.push_back (i + step);
                 vertices.push_back (0.0);
                 vertices.push_back (j + step);
                 vertices.push_back (1);
 				vertices.push_back (1);
+				vertices.push_back (0);
+				vertices.push_back (1);
+				vertices.push_back (0);
 
 				indices.push_back (idxs + 0);
                 indices.push_back (idxs + 2);
@@ -68,7 +81,6 @@ public:
 
 				idxs += 4;
 			}
-
 
 		return Mesh (&vertices[0], sizeof (float) * vertices.size (), &indices[0], indices.size (), vbl);
     }

@@ -57,11 +57,12 @@ public:
         va_end (args);
     }
 
-    void LoadShader (const std::string& path, const GLenum type)
+    void LoadShader (const std::string& path, const GLenum type, const std::string& header = "")
     {
         std::ifstream t (path);
         std::string shader_src ((std::istreambuf_iterator<char> (t)),
             std::istreambuf_iterator<char> ());
+        shader_src = header + shader_src;
         AttachShader (type, shader_src.c_str ());
     }
 
@@ -164,6 +165,11 @@ public:
     {
         value->Bind (textureIdx);
         glUniform1i (GetUniformLocation (value->GetName ()), textureIdx++);
+    }
+
+    GLuint getId () const
+    {
+        return m_programId;
     }
 
 private:

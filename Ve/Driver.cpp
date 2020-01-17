@@ -21,108 +21,76 @@
 
 #include <vector>
 
-int main()
+int main ()
 {
 	Core core;
 
 	core.initGL ();
 
 	Material obj;
-	obj.AddMap (Material::Albedo, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/rusted iron 2/albedo.png");
-	obj.AddMap (Material::Normal, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/rusted iron 2/normal.png");
-	obj.AddMap (Material::Metallic, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/rusted iron 2/metallic.png");
-	obj.AddMap (Material::Roughness, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/rusted iron 2/roughness.png");
+	std::string tex = "tile fancy";
+	obj.AddMap (Material::Albedo, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/albedo.png");
+	obj.AddMap (Material::Normal, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/normal.png");
+	obj.AddMap (Material::Metallic, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/metal.png");
+	obj.AddMap (Material::Roughness, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/roughness.png");
 	obj.AddMap (Material::Ao, 0.5);
 
-	Mesh plane = Mesh::Primitive_Plane ();
-	Mesh cube = Mesh::Primitive_Cube ();
+	Material terrain;
+	terrain.AddMap (Material::Albedo, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/albedo.png");
+	terrain.AddMap (Material::Normal, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/normal.png");
+	terrain.AddMap (Material::Metallic, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/metal.png");
+	terrain.AddMap (Material::Roughness, "E:/OneDrive - www.saaint.com/Dev/Repositories/GLDev/Ve/Res/" + tex + "/roughness.png");
+	terrain.AddMap (Material::Ao, 0.5);
 
-	Camera camera (glm::vec3 (0)); 
+
+	Mesh plane = Mesh::Primitive_Plane ();
+	Mesh cube = Mesh::Primitive_Sphere ();
+
+	Camera camera (glm::vec3 (0));
 	camera.zFar = 100;
 	camera.fov = 45;
-	camera.Rotate (glm::vec3 (-22.0f, 0,0));
+	camera.Rotate (glm::vec3 (-22.0f, 0, 0));
 
 	Transform terrain_transform (glm::vec3 (-250, -24, -250));
-	terrain_transform.scale = glm::vec3(500,1,500);
+	terrain_transform.scale = glm::vec3 (500, 1, 500);
 
-    Transform cube_transform (glm::vec3 (0, -3, -102));
+	Transform cube_transform (glm::vec3 (0, -3, -102));
 
-	int fogRanging = 1;
-	int fogInterpolation = 1;
-	float fogDensity = 0.01f;
-	float fogEnd = 80, fogStart = 20;
-	glm::vec3 fogColor (0.5f);
+	HeightmapGen gen(500,500);
+	gen.Setup (0);
+	gen.Run ();
 
-	double previousTime = 0;
-	double deltaTime = 1;
-	std::vector<double> fpsMeasureBuffer;
-	double fpsAvg = 0;
-	int samples = 100;
-	int cur_samples = 0;
-
-	//HeightmapGen gen(500,500);
-	//gen.Setup (0);
-	//gen.Run ();
-
-	//auto tex = gen.GetTex ("heightmap");
+	auto ht = gen.GetTex ("heightmap");
+	terrain.AddMap (Material::Heightmap, &ht, 1.0f);
 
 	int polymode = GL_FILL, swapint = 1, shadMod = GL_SMOOTH;
 	bool rot = false;
 
-	glm::vec3 lightPositions[] = {
-	   glm::vec3 (-10.0f,  10.0f, 10.0f),
-	   glm::vec3 (-10.0f,  10.0f, 10.0f),
-	   glm::vec3 (-10.0f,  10.0f, 10.0f),
-	   glm::vec3 (-10.0f,  10.0f, 10.0f)
-	};
-	glm::vec3 lightColors[] = {
-		glm::vec3 (300.0f, 300.0f, 300.0f),
-		glm::vec3 (300.0f, 300.0f, 300.0f),
-		glm::vec3 (300.0f, 300.0f, 300.0f),
-		glm::vec3 (300.0f, 300.0f, 300.0f)
-	};
-
-	float lightIntensities[] = {
-		1,1,1,1
-	};
-
-	glm::vec3 albedo(1,0,0);
-	float metallic=1, roughness=1, ao=1.0f;
-
 	Renderer renderer;
+
+	std::vector<Light> lights;
+	lights.push_back (Light{ glm::vec3 (0), glm::vec3 (1), 10.0f });
+	lights.push_back (Light{ glm::vec3 (0), glm::vec3 (1), 10.0f });
+	lights.push_back (Light{ glm::vec3 (0), glm::vec3 (1), 10.0f });
+	lights.push_back (Light{ glm::vec3 (0), glm::vec3 (1), 10.0f });
+
+	FogSettings fogSettings;
+	fogSettings.rangeMode = FogRanging::Range;
+	fogSettings.interpolationMode = FogInterpolation::Exponential;
+	fogSettings.density = 0.01f;
+	fogSettings.end = 80;
+	fogSettings.start = 20;
+    fogSettings.color = glm::vec3 (0.5f);
 	
 	while (core.isRunning())
 	{
-		//Timing
-		double currentTime = glfwGetTime ();
-		deltaTime = (currentTime - previousTime);
-		previousTime = currentTime;
-		fpsMeasureBuffer.push_back (1.0f / deltaTime);
-
-		if (cur_samples++>=samples)
-		{
-			cur_samples = 0;
-			fpsAvg = 0;
-			for (auto i = 0; i < fpsMeasureBuffer.size (); i++)
-				fpsAvg += fpsMeasureBuffer[i];
-			fpsAvg /= fpsMeasureBuffer.size ();
-			fpsMeasureBuffer.clear ();
-		}
-
-		//GL
 		core.Refresh ();
 
 		if(rot)
-			camera.Rotate (glm::vec3 (0, 0, 45.0f) * (float)deltaTime, false);
+			camera.Rotate (glm::vec3 (0, 0, 45.0f) * (float)core.GetDeltaTime(), false);
 		
-		renderer.Render (camera, cube, obj, core, cube_transform, lightPositions, lightColors, lightIntensities, 4);
-
-		//def_shader.SetUniform ("fogRanging", fogRanging);
-		//def_shader.SetUniform ("fogInterpolation", fogInterpolation);
-		//def_shader.SetUniform ("fogEnd", fogEnd);
-		//def_shader.SetUniform ("fogStart", fogStart);
-		//def_shader.SetUniform ("fogDensity", fogDensity);
-		//def_shader.SetUniform ("fogColor", fogColor);
+		renderer.RenderMesh (camera, cube, obj, core, cube_transform, lights, fogSettings);
+		renderer.RenderTerrain (camera, plane, terrain, core, terrain_transform, lights, fogSettings);
 		
 		//ImGui
 		ImGui_ImplGlfw_NewFrame ();
@@ -134,16 +102,7 @@ int main()
 		ImGui::SetWindowPos (ImVec2 (10, 10), ImGuiCond_FirstUseEver);
 		ImGui::SetWindowFontScale (1.5f);
 		
-		if (ImGui::CollapsingHeader ("Performance"))
-		{
-			ImGui::Spacing ();
-			ImGui::Text ("Avg. fps: %.2f", fpsAvg);
-			ImGui::Text ("Avg. frametime (ms): %.2f", 1000.0f/fpsAvg);
-			ImGui::Spacing ();
-			ImGui::Text ("Last fps: %.2f", 1.0f / deltaTime);
-			ImGui::Text ("Last frametime (ms): %.2f", 1000.0*deltaTime);
-			ImGui::Spacing ();
-		}
+		core.ShowPerformanceUI ("Performance");
 
 		ImGui::Spacing ();
 
@@ -151,26 +110,26 @@ int main()
 		{
 			ImGui::Spacing ();
 			ImGui::Text ("Type");
-			ImGui::RadioButton ("Linear", &fogInterpolation, 0); ImGui::SameLine ();
-			ImGui::RadioButton ("Exp", &fogInterpolation, 1); ImGui::SameLine ();
-			ImGui::RadioButton ("Exp^2", &fogInterpolation, 2);
+			ImGui::RadioButton ("Linear", (int*)&fogSettings.interpolationMode, 0); ImGui::SameLine ();
+			ImGui::RadioButton ("Exp", (int*)&fogSettings.interpolationMode, 1); ImGui::SameLine ();
+			ImGui::RadioButton ("Exp^2", (int*)&fogSettings.interpolationMode, 2);
 			ImGui::Spacing ();
 			ImGui::Text ("Distance mode");
-			ImGui::RadioButton ("Plane", &fogRanging, 0); ImGui::SameLine ();
-			ImGui::RadioButton ("Range", &fogRanging, 1);
+			ImGui::RadioButton ("Plane", (int*)&fogSettings.rangeMode, 0); ImGui::SameLine ();
+			ImGui::RadioButton ("Range", (int*)&fogSettings.rangeMode, 1);
 			ImGui::Spacing ();
 
-			if (fogInterpolation == 0)
+			if (fogSettings.interpolationMode == 0)
 			{
-				ImGui::InputFloat ("Start", &fogStart);
-				ImGui::InputFloat ("End", &fogEnd);
+				ImGui::InputFloat ("Start", &fogSettings.start);
+				ImGui::InputFloat ("End", &fogSettings.end);
 			}
 			else
-				ImGui::SliderFloat ("Density", &fogDensity, 0.0f, 1.0f);
+				ImGui::SliderFloat ("Density", &fogSettings.density, 0.0f, 1.f);
 
-			float cols[3] = { fogColor.x, fogColor.y, fogColor.z };
+			float cols[3] = { fogSettings.color.x,  fogSettings.color.y,  fogSettings.color.z };
 			ImGui::SliderFloat3 ("Color", cols, 0.0f, 1.0f);
-			fogColor = glm::vec3 (cols[0], cols[1], cols[2]);
+			fogSettings.color = glm::vec3 (cols[0], cols[1], cols[2]);
 			ImGui::Spacing ();
 		}
 
@@ -179,32 +138,41 @@ int main()
 			renderer.ShowMenu (obj, "Material");
 			ImGui::Spacing ();
 
-			for (unsigned i = 0; i < sizeof (lightPositions) / sizeof (lightPositions[0]); ++i)
+			for (unsigned i = 0; i < lights.size(); ++i)
 			{
 				std::string title = "Light #" + std::to_string(i+1);
 
 				ImGui::PushID (i);
 				if (ImGui::CollapsingHeader (title.c_str()))
 				{
+					Light& light = lights[i];
+
 					ImGui::Spacing ();
-					float lpb[3] = { lightPositions[i].x,  lightPositions[i].y,  lightPositions[i].z };
+					float lpb[3] = { light.pos.x, light.pos.y, light.pos.z };
 					ImGui::SliderFloat3 ("Light Pos", lpb, -20.0f, 20.0f);
-					lightPositions[i] = glm::vec3 (lpb[0], lpb[1], lpb[2]);
+					light.pos = glm::vec3 (lpb[0], lpb[1], lpb[2]);
 					ImGui::Spacing ();
 
-					float lcb[3] = { lightColors[i].x,  lightColors[i].y,  lightColors[i].z };
-					ImGui::SliderFloat3 ("Light Color", lcb, -20.0f, 20.0f);
-					lightColors[i] = glm::vec3 (lcb[0], lcb[1], lcb[2]);
+					float lcb[3] = { light.col.x, light.col.y, light.col.z };
+					ImGui::SliderFloat3 ("Light Col", lcb, 0.0f, 1.0f);
+					light.col = glm::vec3 (lcb[0], lcb[1], lcb[2]);
 					ImGui::Spacing ();
 
-					float inte = lightIntensities[i];
-					ImGui::SliderFloat ("Intensity", &inte, 0.0, 10);
-					lightIntensities[i] = inte;
+					float inte = light.intensity;
+					ImGui::SliderFloat ("Intensity", &inte, 0.0, 300.0f);
+					light.intensity = inte;
 					ImGui::Spacing ();
 				}
 				ImGui::PopID ();
 				ImGui::Spacing ();
 			}
+
+			if (ImGui::Button ("Add Light"))
+			{
+				lights.push_back (Light{ glm::vec3 (0), glm::vec3 (1), 10.0f });
+			}
+
+			ImGui::Spacing ();
 		}
 
 		if (ImGui::CollapsingHeader ("Debug"))
