@@ -60,7 +60,6 @@
     <div id="Screen-shots">
         <section>
             <h3> Screenshots </h2>
-            <img src="Branding/screenshots/cur 12-27-2019.png" alt="Screenshot 12/27/2019">
             <img src="Branding/screenshots/wire.png" alt="Screenshot 12/28/2019">
             <img src="Branding/screenshots/now2.png" alt="Screenshot 12/29/2019">
             <img src="Branding/screenshots/now3.png" alt="Screenshot 12/29/2019">
