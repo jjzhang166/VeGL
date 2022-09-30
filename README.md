@@ -46,9 +46,9 @@
   - [~] <i>  More UI </i>
   - [~] <i>  Refactoring, refactoring and &hellip; more refactoring! </i>
   - [ ] <i>  n-lights </i>
-  - [ ] <i>  More transformation stuff (parents kind-of like in <b><important>Unity3D</b></important>) </i>
+  - [ ] <i>  More transformation stuff </i>
   - [ ] <i>  Entity component system and then <b><important>LUA</b></important> scripting (easy) </i>
-  - [ ] <i>  Multiple viewports/cameras (using <code>glViewport</code> and <code>glScissor</code> and rendering multiple times) </i>
+  - [ ] <i>  Multiple viewports/cameras </i>
   - [ ] <i>  Skeletal animations </i>
   - [ ] <i>  Forward and inverse kinematics </i>
   
